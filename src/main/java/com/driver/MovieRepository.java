@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class MovieRepository {
@@ -39,18 +38,21 @@ public class MovieRepository {
     }
 
     public List<String> getMoviesByDirectorName(String directorName) {
-        return movie2Director.stream()
-                .filter(i -> i.getDirector()
-                        .getName()
-                        .equals(directorName))
-                .map(pair -> pair.getMovie().getName())
-                .collect(Collectors.toList());
+        List<String> res = new ArrayList<>();
+        for (var pair : movie2Director) {
+            if (pair.getDirector().getName().equals(directorName)) {
+                res.add(pair.getMovie().getName());
+            }
+        }
+        return res;
     }
 
     public List<String> findAllMovies() {
-        return movieDb.stream()
-                .map(Movie::getName)
-                .collect(Collectors.toList());
+        List<String> res = new ArrayList<>();
+        for (var movie : movieDb) {
+            res.add(movie.getName());
+        }
+        return res;
     }
 
     public void deleteDirectorByName(String directorName) {
