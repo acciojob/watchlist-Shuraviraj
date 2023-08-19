@@ -12,45 +12,74 @@ public class MovieRepository {
     private List<Pair> movie2Director = new ArrayList<>();
 
     public void addMovie(Movie movie) {
-        movieDb.add(movie);
+        try {
+            movieDb.add(movie);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void addDirector(Director director) {
-        directorDb.add(director);
+        try {
+            directorDb.add(director);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void addMovieDirectorPair(Movie movie, Director director) {
-        movie2Director.add(new Pair(movie, director));
+        try {
+            movie2Director.add(new Pair(movie, director));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public Movie getMovieByName(String name) {
-        for (var movie : movieDb) {
-            if (movie.getName().equals(name)) return movie;
+        try {
+            for (var movie : movieDb) {
+                if (movie.getName().equals(name)) return movie;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return null;
     }
 
     public Director getDirectorByName(String name) {
-        for (var director : directorDb) {
-            if (director.getName().equals(name)) return director;
+        try {
+            for (var director : directorDb) {
+                if (director.getName().equals(name)) return director;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return null;
     }
 
     public List<String> getMoviesByDirectorName(String directorName) {
         List<String> res = new ArrayList<>();
-        for (var pair : movie2Director) {
-            if (pair.getDirector().getName().equals(directorName)) {
-                res.add(pair.getMovie().getName());
+        try {
+            for (var pair : movie2Director) {
+                if (pair.getDirector().getName().equals(directorName)) {
+                    res.add(pair.getMovie().getName());
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
         return res;
     }
 
     public List<String> findAllMovies() {
         List<String> res = new ArrayList<>();
-        for (var movie : movieDb) {
-            res.add(movie.getName());
+        try {
+            for (var movie : movieDb) {
+                res.add(movie.getName());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return res;
     }
@@ -58,22 +87,31 @@ public class MovieRepository {
     public void deleteDirectorByName(String directorName) {
         Director director = getDirectorByName(directorName);
         directorDb.remove(director);
-        for (var pair : movie2Director) {
-            if (pair.getDirector().equals(director)) {
-                movie2Director.remove(pair);
-                movieDb.remove(pair.getMovie());
+        try {
+            for (var pair : movie2Director) {
+                if (pair.getDirector().equals(director)) {
+                    movie2Director.remove(pair);
+                    movieDb.remove(pair.getMovie());
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public void deleteAllDirectors() {
         List<Movie> movieToBeDeleted = new ArrayList<>();
-        for (var pair : movie2Director) {
-            movieToBeDeleted.add(pair.getMovie());
+        try {
+            for (var pair : movie2Director) {
+                movieToBeDeleted.add(pair.getMovie());
+            }
+            movieDb.removeAll(movieToBeDeleted);
+            directorDb.clear();
+            movie2Director.clear();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        movieDb.removeAll(movieToBeDeleted);
-        directorDb.clear();
-        movie2Director.clear();
+
     }
 
     private class Pair {
