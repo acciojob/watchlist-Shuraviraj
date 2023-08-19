@@ -38,17 +38,19 @@ public class MovieRepository {
         return null;
     }
 
-    public List<Movie> getMoviesByDirectorName(String directorName) {
+    public List<String> getMoviesByDirectorName(String directorName) {
         return movie2Director.stream()
                 .filter(i -> i.getDirector()
                         .getName()
                         .equals(directorName))
-                .map(Pair::getMovie)
+                .map(pair -> pair.getMovie().getName())
                 .collect(Collectors.toList());
     }
 
-    public List<Movie> findAllMovies() {
-        return movieDb;
+    public List<String> findAllMovies() {
+        return movieDb.stream()
+                .map(Movie::getName)
+                .collect(Collectors.toList());
     }
 
     public void deleteDirectorByName(String directorName) {
